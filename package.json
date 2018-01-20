@@ -1,0 +1,12 @@
+{
+  "name": "lynlab-api",
+  "version": "1.0.0",
+  "description": "API server for lynlab services",
+  "main": "src/index.js",
+  "repository": "git@github.com:lynlab/lynlab-api.git",
+  "author": "Do Hoerin <hellodhlyn@gmail.com>",
+  "private": true,
+  "devDependencies": {
+    "aws-sdk": "^2.185.0"
+  }
+}
