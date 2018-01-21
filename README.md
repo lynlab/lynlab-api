@@ -5,7 +5,12 @@ API server for lynlab services
   - apex (<http://apex.run>)
   - terrafom (<https://www.terraform.io>)
 
-## Setup
+## Test
+```
+yarn test
+```
+
+## Deployment
 Deploy lambda functions.
 
 ```

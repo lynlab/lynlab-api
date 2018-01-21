@@ -1,16 +1,33 @@
-'use strict';
+/* eslint-disable import/no-unresolved */
 
-function generateResponse(statusCode, body) {
-  return {
-    statusCode: statusCode,
-    body: JSON.stringify({ result: body })
-  }
-}
+const router = require('./lib/router');
+const auth = require('./auth');
 
-exports.handle = function (event, context, callback) {
-  if (event.path === '/ping') {
-    callback(null, generateResponse(200, 'pong'));
-  } else {
-    callback(null, generateResponse(404, { message: 'Not found' }));
+const routeMap = {
+  '/ping': {
+    GET: () => new Promise(resolve => resolve('pong')),
+  },
+  '/v1': {
+    '/auth': auth.routeMap,
+  },
+};
+
+const handle = (event, context, callback) => new Promise((resolve, reject) => {
+  try {
+    resolve(router.route(routeMap, event.path, event.httpMethod));
+  } catch (e) {
+    callback(null, { statusCode: 404 })
   }
-}
+}).then((control) => {
+  return control(event, context);
+}).then((result) => {
+  callback(null, {
+    statusCode: 200,
+    body: JSON.stringify({ result }),
+  });
+}).catch((e) => {
+  console.error(e, e.stack);
+  callback(null, { statusCode: 500 });
+});
+
+exports.handle = handle;

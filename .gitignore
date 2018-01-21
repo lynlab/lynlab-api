@@ -58,6 +58,7 @@ typings/
 .env
 
 # Generated stuffs
+.idea/
 .terraform
 *.tfstate
 *.tfstate.backup
