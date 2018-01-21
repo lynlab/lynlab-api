@@ -57,3 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+# Generated stuffs
+.idea/
+.terraform
+*.tfstate
+*.tfstate.backup
+
+# Sensitives
+project.json
