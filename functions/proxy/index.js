@@ -3,6 +3,8 @@
 const router = require('./lib/router');
 const auth = require('./auth');
 
+const makeResponse = require('./lib/lambda').makeResponse;
+
 const routeMap = {
   '/ping': {
     GET: () => new Promise(resolve => resolve('pong')),
@@ -16,18 +18,15 @@ const handle = (event, context, callback) => new Promise((resolve, reject) => {
   try {
     resolve(router.route(routeMap, event.path, event.httpMethod));
   } catch (e) {
-    callback(null, { statusCode: 404 })
+    callback(null, makeResponse(404))
   }
 }).then((control) => {
   return control(event, context);
 }).then((result) => {
-  callback(null, {
-    statusCode: 200,
-    body: JSON.stringify({ result }),
-  });
+  callback(null, makeResponse(200, result));
 }).catch((e) => {
   console.error(e, e.stack);
-  callback(null, { statusCode: 500 });
+  callback(null, makeResponse(500));
 });
 
 exports.handle = handle;
